@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-class Sensor_Graph():
+class SensorGraph():
 
     def __init__(self, interval, length, sensor):
         self.interval = interval #plotting intervals are in seconds
