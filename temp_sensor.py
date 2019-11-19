@@ -35,7 +35,19 @@ class TempSensor():
             raise Exception("Non OK status code returned:", response.text)
             # using raise exception here as we are not looking for syntax errors, but execution errors
 
+        #jsonify the response so we can extract
         response = response.json
 
-        
-    # write functions to request data from Samsara API using group_id, sensor_id, and access token
+        sensor_data = response["sensors"][0]
+        self.name = sensor_data["name"]
+        self.vehicleId = sensor_data["vehicleId"]
+        # using the api_time_format we entered in settings
+        time = datetime.strptime(sensor_data["ambientTemperatureTime"], Constants.api_time_format)
+        self.x.append(time.strftime("%d-%b-%y %H:%M"))
+        #API returns millicelsius, so we need to divide by 1000 to get Celsius
+        temp = sensor_data["ambientTemperature"] / 1000
+        self.y.append(self.celsiusToFahrenheit(temp))
+
+    def get_graphing_data(self, length):
+        self.beginSensing()
+        return self.x[-length:], self.y[-length:]
