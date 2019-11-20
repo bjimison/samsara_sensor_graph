@@ -31,7 +31,7 @@ class TempSensor():
 
         response = requests.post(Constants.temperature_end_point, params = params, json=body)
 
-        if response.status_code 1= 200:
+        if response.status_code != 200:
             raise Exception("Non OK status code returned:", response.text)
             # using raise exception here as we are not looking for syntax errors, but execution errors
 
@@ -44,7 +44,7 @@ class TempSensor():
         # using the api_time_format we entered in settings
         time = datetime.strptime(sensor_data["ambientTemperatureTime"], Constants.api_time_format)
         self.x.append(time.strftime("%d-%b-%y %H:%M"))
-        #API returns millicelsius, so we need to divide by 1000 to get Celsius
+        # API returns millicelsius, so we need to divide by 1000 to get Celsius
         temp = sensor_data["ambientTemperature"] / 1000
         self.y.append(self.celsiusToFahrenheit(temp))
 
